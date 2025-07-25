@@ -375,52 +375,6 @@
       ],
       "subMetas": {}
     },
-    "dcdd4": {
-      "importer": "sprite-frame",
-      "uuid": "cab245b3-fac5-4aa6-bb02-f370c663806f@dcdd4",
-      "displayName": "",
-      "id": "dcdd4",
-      "name": "icon-coin",
-      "userData": {
-        "trimType": "auto",
-        "trimThreshold": 1,
-        "rotated": false,
-        "offsetX": 0,
-        "offsetY": 0,
-        "trimX": 325,
-        "trimY": 468,
-        "width": 36,
-        "height": 36,
-        "rawWidth": 36,
-        "rawHeight": 36,
-        "borderTop": 0,
-        "borderBottom": 0,
-        "borderLeft": 0,
-        "borderRight": 0,
-        "packable": true,
-        "pixelsToUnit": 100,
-        "pivotX": 0.5,
-        "pivotY": 0.5,
-        "meshType": 0,
-        "vertices": {
-          "rawPosition": [],
-          "indexes": [],
-          "uv": [],
-          "nuv": [],
-          "minPos": [],
-          "maxPos": []
-        },
-        "isUuid": true,
-        "imageUuidOrDatabaseUri": "e5ed78ff-06d4-4568-af23-5572030ee5b7@6c48a",
-        "atlasUuid": "cab245b3-fac5-4aa6-bb02-f370c663806f"
-      },
-      "ver": "1.0.12",
-      "imported": true,
-      "files": [
-        ".json"
-      ],
-      "subMetas": {}
-    },
     "e9309": {
       "importer": "sprite-frame",
       "uuid": "cab245b3-fac5-4aa6-bb02-f370c663806f@e9309",
@@ -480,7 +434,7 @@
         "offsetX": 0,
         "offsetY": 0,
         "trimX": 325,
-        "trimY": 506,
+        "trimY": 468,
         "width": 762,
         "height": 32,
         "rawWidth": 762,

@@ -94,21 +94,6 @@
                 <key>textureRotated</key>
                 <true/>
             </dict>
-            <key>icon-coin.png</key>
-            <dict>
-                <key>aliases</key>
-                <array/>
-                <key>spriteOffset</key>
-                <string>{0,0}</string>
-                <key>spriteSize</key>
-                <string>{36,36}</string>
-                <key>spriteSourceSize</key>
-                <string>{36,36}</string>
-                <key>textureRect</key>
-                <string>{{325,468},{36,36}}</string>
-                <key>textureRotated</key>
-                <false/>
-            </dict>
             <key>menu-expanded-bg.png</key>
             <dict>
                 <key>aliases</key>
@@ -135,7 +120,7 @@
                 <key>spriteSourceSize</key>
                 <string>{762,32}</string>
                 <key>textureRect</key>
-                <string>{{325,506},{762,32}}</string>
+                <string>{{325,468},{762,32}}</string>
                 <key>textureRotated</key>
                 <true/>
             </dict>
@@ -498,7 +483,7 @@
             <key>size</key>
             <string>{512,2048}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:a8adeeda6837af773872dd634653ef7b:909f064f95c01dbf7228d9abb5fd5c50:40ee7df176381dd4082d4248ef6d2be1$</string>
+            <string>$TexturePacker:SmartUpdate:53101fa8d01b676ba39cbd702570ce3c:f37c78399e831945a4a8818225e954b9:40ee7df176381dd4082d4248ef6d2be1$</string>
             <key>textureFileName</key>
             <string>standard-cascading-slot.webp</string>
         </dict>
