@@ -1002,7 +1002,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": -270,
+      "y": -290,
       "z": 0
     },
     "_lrot": {
@@ -1064,7 +1064,7 @@
     "node": {
       "__id__": 43
     },
-    "_enabled": false,
+    "_enabled": true,
     "__prefab": {
       "__id__": 47
     },
