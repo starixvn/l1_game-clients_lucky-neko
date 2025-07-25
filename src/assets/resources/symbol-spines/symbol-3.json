@@ -1,6 +1,6 @@
 {
 "skeleton": {
-	"hash": "tdGs4J4bdnlR8vaPTuZe23dBIng",
+	"hash": "GxgmROcJNDFfvgUtvuDzgstyPDA",
 	"spine": "3.8.99",
 	"x": -116.5,
 	"y": -113,
@@ -61,10 +61,10 @@
 				"s3_bg": { "width": 110, "height": 110 }
 			},
 			"s3_glow": {
-				"s3_glow": { "y": 36.85, "width": 99, "height": 87 }
+				"s3_glow": { "y": 36.85, "width": 99, "height": 86 }
 			},
 			"s3_sushi": {
-				"s3_sushi": { "y": 36.85, "width": 84, "height": 73 }
+				"s3_sushi": { "y": 36.85, "width": 84, "height": 72 }
 			},
 			"smoke/smoke-1": {
 				"smoke/smoke-1": { "width": 48, "height": 37 }
