@@ -286,8 +286,8 @@ export const languages = {
         "you_win_free_spin": "您贏得"
     },
     "LuckyNeko": {
-        "game_icon_name": "招財貓",
-        "game_name": "招財貓"
+        "game_icon_name": "幸運貓",
+        "game_name": "幸運貓"
     }
 };
 
