@@ -55,7 +55,7 @@ s9_particle/s9_particle_00
   index: -1
 explode_sakura/explode_sakura_01
   rotate: true
-  xy: 1520, 203
+  xy: 1553, 427
   size: 11, 9
   orig: 233, 226
   offset: 108, 104
@@ -342,10 +342,10 @@ lantern_starglow
   index: -1
 mouth
   rotate: false
-  xy: 1980, 174
-  size: 21, 9
+  xy: 1520, 203
+  size: 22, 11
   orig: 22, 11
-  offset: 0, 1
+  offset: 0, 0
   index: -1
 mouth_open
   rotate: true

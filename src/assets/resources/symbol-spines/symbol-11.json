@@ -1,6 +1,6 @@
 {
 "skeleton": {
-	"hash": "Z4Ef6ObWZD+P7Az7yy8kWeA3Slo",
+	"hash": "mcbyBNW7x368+jH2iOyoLlyG2WM",
 	"spine": "3.8.99",
 	"x": -65,
 	"y": -65,
@@ -33,8 +33,8 @@
 ],
 "slots": [
 	{ "name": "s11_bg", "bone": "root", "attachment": "s11_bg" },
-	{ "name": "bg_light", "bone": "bg_light", "color": "43ff27ff", "attachment": "bg_light", "blend": "additive" },
-	{ "name": "bg_light2", "bone": "bg_light", "color": "44ff28ff", "attachment": "bg_light", "blend": "additive" },
+	{ "name": "bg_light", "bone": "bg_light", "color": "25bdffff", "attachment": "bg_light", "blend": "additive" },
+	{ "name": "bg_light2", "bone": "bg_light", "color": "26bdffff", "attachment": "bg_light", "blend": "additive" },
 	{ "name": "s11_body", "bone": "cat_body", "attachment": "s11_body" },
 	{ "name": "eye_lf", "bone": "cat_body", "attachment": "eye_lf" },
 	{ "name": "eye_rt", "bone": "cat_body", "attachment": "eye_rt" },
