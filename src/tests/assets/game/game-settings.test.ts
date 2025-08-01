@@ -12,9 +12,9 @@ describe("settings", () => {
     it("should have data as expected", () => {
         // Assert
         expect(settings).toStrictEqual({
-            id: 132,
-            name: "FruitSamurai",
-            tolgeeNamespaces: ["FruitSamurai", "cascadingslot"],
+            id: 143,
+            name: "LuckyNeko",
+            tolgeeNamespaces: ["LuckyNeko", "cascadingslot"],
             durations: {
                 wholeRound: 14,
                 lockingBet: 3,
@@ -27,7 +27,7 @@ describe("settings", () => {
             },
             isMiniGame: false,
             numberOfRoundHistory: 11,
-            observerNamespace: "FruitSamurai",
+            observerNamespace: "LuckyNeko",
             validateBalanceWhenBet: true,
         });
     });

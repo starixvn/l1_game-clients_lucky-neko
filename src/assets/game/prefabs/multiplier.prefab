@@ -93,7 +93,7 @@
     "_lpos": {
       "__type__": "cc.Vec3",
       "x": 0,
-      "y": 0,
+      "y": -27,
       "z": 0
     },
     "_lrot": {
@@ -133,7 +133,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 51.33,
+      "width": 48.16,
       "height": 38
     },
     "_anchorPoint": {
@@ -183,7 +183,7 @@
       "__expectedType__": "cc.BitmapFont"
     },
     "_isSystemFontUsed": false,
-    "_spacingX": 0,
+    "_spacingX": -2,
     "_isItalic": false,
     "_isBold": false,
     "_isUnderline": false,

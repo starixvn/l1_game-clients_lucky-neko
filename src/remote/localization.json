@@ -1,18 +1,22 @@
 {
     "lobbyNames": {
-        "en": "Fruit Samurai",
-        "id": "Fruit Samurai",
-        "th": "ผลไม้ซามูไร",
-        "vi": "Chém\nHoa Quả",
-        "zh_cn": "武士水果",
-        "zh_tw": "武士水果"
+        "en": "Lucky Neko",
+        "id": "Lucky Neko",
+        "th": "แมวนำโชค",
+        "vi": "Mèo May Mắn",
+        "zh_cn": "幸运猫",
+        "zh_tw": "幸運貓",
+        "ja": "ラッキーネコ",
+        "es": "Lucky Neko"
     },
     "gameNames": {
-        "en": "Fruit Samurai",
-        "id": "Fruit Samurai",
-        "th": "ผลไม้ซามูไร",
-        "vi": "Chém Hoa Quả",
-        "zh_cn": "武士水果",
-        "zh_tw": "武士水果"
+        "en": "Lucky Neko",
+        "id": "Lucky Neko",
+        "th": "แมวนำโชค",
+        "vi": "Mèo May Mắn",
+        "zh_cn": "幸运猫",
+        "zh_tw": "幸運貓",
+        "ja": "ラッキーネコ",
+        "es": "Lucky Neko"
     }
 }
