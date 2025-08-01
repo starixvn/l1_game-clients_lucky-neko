@@ -35,10 +35,10 @@ export const languages = {
         "enter_your_name": "ニックネームを入力してください。",
         "even_win": "偶数勝利",
         "from": "から",
-        "game_category_new_releases": "最新リリース",
+        "game_category_new_releases": "新作",
         "game_category_ph_1": "全ゲーム",
         "game_category_ph_2": "ピノイ・スペシャル",
-        "game_category_ph_3": "スロットゲーム",
+        "game_category_ph_3": "スロット",
         "game_category_ph_4": "カードゲーム",
         "game_category_ph_5": "カジュアルゲーム",
         "game_category_ph_6": "ロト",
@@ -265,7 +265,7 @@ export const languages = {
         "reach_max_win": "最大配当を獲得！",
         "real_mode": "リアルモード",
         "round_settle_msg": "幸運を祈る！",
-        "scatter_odds_preview": "4つ以上のスキャッターシンボルでフリースピンが発動します。",
+        "scatter_odds_preview": "%{numOfScatters}つ以上のScattersで%{numOfSpins}回のFREE SPINSが発動します。",
         "show_msg_when_spin_desktop": "スペースキーを長押し、またはスピンをクリック",
         "show_msg_when_spin_phone": "スピンボタンをタップまたは長押しして回転開始",
         "start": "スタート",
@@ -286,7 +286,7 @@ export const languages = {
         "you_win_free_spin": "当たり"
     },
     "LuckyNeko": {
-        "game_icon_name": "Lucky Neko",
+        "game_icon_name": "ラッキーネコ",
         "game_name": "ラッキーネコ"
     }
 };
