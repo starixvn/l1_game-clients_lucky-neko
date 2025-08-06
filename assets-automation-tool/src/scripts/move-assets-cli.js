@@ -4,6 +4,14 @@ const FastBulkDownloader = require('./download-tool');
 const { ConfigManager } = require('../utils/common');
 const { logger } = require('../utils/logger');
 
+const FULL = 'full';
+const DOWNLOAD = 'download';
+const COPY = 'copy';
+const ALL = 'all';
+const TWO_D = '2d';
+const THREE_D = '3d';
+const SPECIFIC = 'specific';
+
 class AssetsAutomationCLI {
     constructor() {
         this.rl = readline.createInterface({
@@ -28,18 +36,18 @@ class AssetsAutomationCLI {
 
     async promptOperationType() {
         logger.info('\n🚀 Select operation type:');
-        logger.info('   1. download  - Download assets from Google Drive');
-        logger.info('   2. copytype  - Copy/sync downloaded assets to project');
-        logger.info('   3. full      - Download + Copy (complete workflow)');
+        logger.info(`   1. ${FULL}      - Download + Copy (complete workflow)`);
+        logger.info(`   2. ${DOWNLOAD}  - Download assets from Google Drive`);
+        logger.info(`   3. ${COPY}  - Copy/sync downloaded assets to project`);
 
-        const choice = await this.askSelect('Please select operation (1-3): ', ['1', '2', '3', 'download', 'copytype', 'full']);
+        const choice = await this.askSelect('Please select operation (1-3): ', ['1', '2', '3', FULL, DOWNLOAD, COPY]);
         const operationMap = {
-            '1': 'download',
-            '2': 'copytype',
-            '3': 'full',
-            'download': 'download',
-            'copytype': 'copytype',
-            'full': 'full'
+            '1': FULL,
+            '2': DOWNLOAD,
+            '3': COPY,
+            [FULL]: FULL,
+            [DOWNLOAD]: DOWNLOAD,
+            [COPY]: COPY,
         };
         const operation = operationMap[choice];
         await this.promptTargetSelection(operation);
@@ -47,28 +55,28 @@ class AssetsAutomationCLI {
 
     async promptTargetSelection(operation) {
         logger.info(`\n📦 Select target for ${operation}:`);
-        logger.info('   1. all       - Process all assets');
-        logger.info('   2. 2d        - Process 2D assets only');
-        logger.info('   3. 3d        - Process 3D assets only');
-        logger.info('   4. specific  - Specify a particular item');
+        logger.info(`   1. ${SPECIFIC}  - Specify a particular item`);
+        logger.info(`   2. ${ALL}       - Process all assets`);
+        logger.info(`   3. ${TWO_D}        - Process 2D assets only`);
+        logger.info(`   4. ${THREE_D}        - Process 3D assets only`);
 
-        const choice = await this.askSelect('Please select target (1-4): ', ['1', '2', '3', '4', 'all', '2d', '3d', 'specific']);
+        const choice = await this.askSelect('Please select target (1-4): ', ['1', '2', '3', '4', SPECIFIC, ALL, TWO_D, THREE_D]);
 
-        let target = 'all';
+        let target = ALL;
         const targetMap = {
-            '1': 'all',
-            '2': '2d',
-            '3': '3d',
-            '4': 'specific',
-            'all': 'all',
-            '2d': '2d',
-            '3d': '3d',
-            'specific': 'specific'
+            '1': SPECIFIC,
+            '2': ALL,
+            '3': TWO_D,
+            '4': THREE_D,
+            [SPECIFIC]: SPECIFIC,
+            [ALL]: ALL,
+            [TWO_D]: TWO_D,
+            [THREE_D]: THREE_D
         };
 
         target = targetMap[choice];
 
-        if (target === 'specific') {
+        if (target === SPECIFIC) {
             target = await this.selectSpecificItem();
         }
 
@@ -116,17 +124,17 @@ class AssetsAutomationCLI {
     async executeOperation(operation, target) {
         try {
             switch (operation) {
-                case 'download':
+                case DOWNLOAD:
                     await this.executeDownload(target);
                     break;
-                case 'copytype':
-                    await this.executeCopytype(target);
+                case COPY:
+                    await this.executeCopy(target);
                     break;
-                case 'full':
+                case FULL:
                     logger.info('🔄 Starting full workflow...');
                     await this.executeDownload(target);
                     logger.info('📋 Download completed, starting copy...');
-                    await this.executeCopytype(target);
+                    await this.executeCopy(target);
                     logger.success('✅ Full workflow completed!');
                     break;
             }
@@ -160,7 +168,7 @@ class AssetsAutomationCLI {
         downloader.showFinalStats();
     }
 
-    async executeCopytype(target) {
+    async executeCopy(target) {
         logger.info(`📋 Starting copy/sync for target: ${target}`);
         const options = { type: target };
         const synchronizer = new FileSynchronizer(options);
