@@ -3,6 +3,7 @@ const { FileSynchronizer } = require('./move-assets');
 const FastBulkDownloader = require('./download-tool');
 const { ConfigManager } = require('../utils/common');
 const { logger } = require('../utils/logger');
+const TexturePackerCLI = require('./texture-packer-cli');
 
 const FULL = 'full';
 const DOWNLOAD = 'download';
@@ -11,6 +12,7 @@ const ALL = 'all';
 const TWO_D = '2d';
 const THREE_D = '3d';
 const SPECIFIC = 'specific';
+const TEXTURE_PACKER = 'texture-packer';
 
 class AssetsAutomationCLI {
     constructor() {
@@ -39,18 +41,26 @@ class AssetsAutomationCLI {
         logger.info(`   1. ${FULL}      - Download + Copy (complete workflow)`);
         logger.info(`   2. ${DOWNLOAD}  - Download assets from Google Drive`);
         logger.info(`   3. ${COPY}  - Copy/sync downloaded assets to project`);
+        logger.info(`   4. ${TEXTURE_PACKER}  - Pack textures`);
 
-        const choice = await this.askSelect('Please select operation (1-3): ', ['1', '2', '3', FULL, DOWNLOAD, COPY]);
+        const choice = await this.askSelect('Please select operation (1-4): ', ['1', '2', '3', '4', FULL, DOWNLOAD, COPY, TEXTURE_PACKER]);
         const operationMap = {
             '1': FULL,
             '2': DOWNLOAD,
             '3': COPY,
+            '4': TEXTURE_PACKER,
             [FULL]: FULL,
             [DOWNLOAD]: DOWNLOAD,
             [COPY]: COPY,
+            [TEXTURE_PACKER]: TEXTURE_PACKER,
         };
         const operation = operationMap[choice];
-        await this.promptTargetSelection(operation);
+
+        if (operation === TEXTURE_PACKER) {
+            await this.promptTexturePacker();
+        } else {
+            await this.promptTargetSelection(operation);
+        }
     }
 
     async promptTargetSelection(operation) {
@@ -188,6 +198,13 @@ class AssetsAutomationCLI {
         if (validOptions.includes(answer)) return answer;
         logger.warn('❌ Invalid input, please try again');
         return await this.askSelect(question, validOptions);
+    }
+
+    async promptTexturePacker() {
+        logger.info('\n🔄 Starting texture packer...');
+        // 傳入主 CLI 的 readline 介面，避免衝突
+        const texturePacker = new TexturePackerCLI(this.rl);
+        await texturePacker.run();
     }
 }
 

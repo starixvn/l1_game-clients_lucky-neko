@@ -15,6 +15,8 @@
     "copytype:font-bitmap": "node src/scripts/move-assets.js font-bitmap",
     "full": "npm run download && npm run copytype",
     "cli": "node src/scripts/move-assets-cli.js",
+    "check-assets": "node src/scripts/check-assets.js",
+    "texture-packer": "node src/scripts/texture-packer.js",
     "del-downloads": "rm -rf output/downloads"
   },
   "dependencies": {
