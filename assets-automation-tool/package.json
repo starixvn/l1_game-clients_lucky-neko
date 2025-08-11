@@ -17,10 +17,12 @@
     "cli": "node src/scripts/move-assets-cli.js",
     "check-assets": "node src/scripts/check-assets.js",
     "texture-packer": "node src/scripts/texture-packer.js",
-    "del-downloads": "rm -rf output/downloads"
+    "del-downloads": "rm -rf output/downloads",
+    "get-height": "node src/scripts/shoebox-auto/get-height.js"
   },
   "dependencies": {
-    "googleapis": "^129.0.0"
+    "googleapis": "^129.0.0",
+    "image-size": "^2.0.2"
   },
   "keywords": [
     "google-drive",
