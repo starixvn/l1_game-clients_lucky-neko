@@ -3,12 +3,12 @@ const fsp = fs.promises;
 const path = require('path');
 const { imageSize } = require('image-size');
 
-const CONFIG_FILE = 'config/generate-heights-config.json';
+const CONFIG_FILE = '/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/config/generate-heights-config.json';
 const DEFAULT_OUTPUT = 'image-heights.json';
-const OUTPUT_DIR = 'config';
+const OUTPUT_DIR = '/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/config';
 
 async function loadConfig() {
-  const cfgPath = path.resolve(CONFIG_FILE);
+  const cfgPath = CONFIG_FILE;
   const raw = await fsp.readFile(cfgPath, 'utf8');
   const cfg = JSON.parse(raw);
 
@@ -64,7 +64,7 @@ async function saveResults(folder, heights, outputFilename) {
     heights
   };
 
-  const outDir = path.resolve(OUTPUT_DIR);
+  const outDir = OUTPUT_DIR;
   await fsp.mkdir(outDir, { recursive: true });
   
   const outPath = path.join(outDir, outputFilename);
