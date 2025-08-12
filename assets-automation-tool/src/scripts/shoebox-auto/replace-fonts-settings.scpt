@@ -133,9 +133,87 @@ tell application "System Events"
         
         log "✅ 已成功更新 File Format Loop 設定"
         
-    on error errMsg
-        log "❌ 讀取或設定 File Format Loop 失敗: " & errMsg
-    end try
+        -- 滑鼠移動到 File Format Outer 位置 1200,235
+        do shell script "/opt/homebrew/bin/cliclick m:1200,235"
+        delay 0.5
+        -- 使用 jq 解析 JSON 並提取 font-multiplier.fileFormat.outer 的值
+        set fileFormatOuter to do shell script "echo " & quoted form of configContent & " | jq -r '.\"font-multiplier\".fileFormat.outer'"
+        log "✅ 成功讀取 File Format Outer 設定: " & fileFormatOuter
 
+        -- 滑鼠移動到 File Format Outer 位置 1200,235
+        do shell script "/opt/homebrew/bin/cliclick m:1200,235"
+        delay 0.5
+
+        -- 滑鼠點擊 File Format Outer 文字編輯視窗並選取所有文字
+        do shell script "/opt/homebrew/bin/cliclick c:1200,235"
+        delay 0.5
+        -- 選取全部文字 (Cmd+A) 然後刪除
+        key code 0 using command down  -- Cmd+A
+        delay 0.3
+        key code 51  -- Delete key
+        delay 0.5
+
+        -- 輸入新的 File Format Outer 文字
+        -- 先讀取 image-heights.json 找到 font-multiplier 的 height 值
+        set imageHeightsPath to "/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/config/image-heights.json"
+        set imageHeightsContent to do shell script "cat " & quoted form of imageHeightsPath
+        
+        -- 使用 jq 找到 font-multiplier.png 的 height 值
+        set fontMultiplierHeight to do shell script "echo " & quoted form of imageHeightsContent & " | jq -r '.heights[] | select(.file == \"font-multiplier.png\") | .height'"
+        log "✅ 從 image-heights.json 讀取到 font-multiplier height: " & fontMultiplierHeight
+        
+        -- 取得原始的 fileFormat.outer 模板
+        set fileFormatOuterTemplate to do shell script "echo " & quoted form of configContent & " | jq -r '.\"font-multiplier\".fileFormat.outer'"
+        
+        -- 使用 sed 將模板中的 "變數" 替換為實際的 height 值
+        set fileFormatOuter to do shell script "echo " & quoted form of fileFormatOuterTemplate & " | sed 's/變數/" & fontMultiplierHeight & "/g'"
+        log "✅ 成功處理 File Format Outer 設定: " & fileFormatOuter
+        
+        -- 將處理好的 fileFormatOuter 內容設定到剪貼簿並貼上
+        set the clipboard to fileFormatOuter
+        delay 0.3
+        key code 9 using command down  -- Cmd+V
+        delay 0.5
+        
+        log "✅ 已成功更新 File Format Outer 設定"
+
+        -- 使用 sed 將  1165,545 txt Line Height 改為 fontMultiplierHeight
+        do shell script "/opt/homebrew/bin/cliclick m:1165,545"
+        delay 0.5
+        do shell script "/opt/homebrew/bin/cliclick c:1165,545"
+        delay 0.5
+        -- 選取全部文字 (Cmd+A) 然後刪除
+        key code 0 using command down  -- Cmd+A
+        delay 0.3
+        key code 51  -- Delete key
+        delay 0.5
+        set the clipboard to fontMultiplierHeight
+        delay 0.3
+        key code 9 using command down  -- Cmd+V
+        delay 0.5
+        log "✅ 已成功更新 txt Line Height 設定"
+
+
+        -- 點擊 Apply 按鈕
+        do shell script "/opt/homebrew/bin/cliclick m:1300,645"
+        delay 0.5
+        do shell script "/opt/homebrew/bin/cliclick c:1300,645"
+        delay 0.5
+        -- 點擊 Apply X 關閉按鈕
+        do shell script "/opt/homebrew/bin/cliclick m:1330,43"
+        delay 0.5
+        do shell script "/opt/homebrew/bin/cliclick c:1330,43"
+        delay 0.5
+        
+        -- 點擊 Save 按鈕
+        do shell script "/opt/homebrew/bin/cliclick m:880,318"
+        delay 0.5
+        do shell script "/opt/homebrew/bin/cliclick c:880,318"
+        delay 1
+        log "✅ 已點擊 Apply + Save 按鈕"
+
+    on error errMsg
+        log "❌ 讀取或設定 File Format 失敗: " & errMsg
+    end try
   end tell
 end tell
