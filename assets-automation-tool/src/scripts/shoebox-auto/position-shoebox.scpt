@@ -28,7 +28,7 @@ tell application "System Events"
         end try
       end repeat
       -- 滑鼠點擊視窗
-      do shell script "/opt/homebrew/bin/cliclick c:110,110"
+      do shell script "/opt/homebrew/bin/cliclick c:110,200"
       delay 0.5
     end try
   end tell
@@ -74,17 +74,17 @@ tell application "System Events"
     delay 1
     
     -- 移動滑鼠到 font-multiplier.png 位置並確認
-    do shell script "/opt/homebrew/bin/cliclick m:220,375"
-    delay 0.8
+    -- do shell script "/opt/homebrew/bin/cliclick m:220,355"
+    -- delay 0.8
     
     -- 點擊確認文件位置
-    do shell script "/opt/homebrew/bin/cliclick c:220,375"
+    do shell script "/opt/homebrew/bin/cliclick c:220,355"
     delay 0.5
     
     -- 開始拖拉：移動到起始位置並按住滑鼠
-    do shell script "/opt/homebrew/bin/cliclick m:220,375"
-    delay 0.3
-    do shell script "/opt/homebrew/bin/cliclick dd:220,375"
+    do shell script "/opt/homebrew/bin/cliclick m:220,355"
+    delay 0.5
+    do shell script "/opt/homebrew/bin/cliclick dd:220,355"
     delay 1
     
     -- 確保 ShoeBox 窗口在前台
@@ -167,96 +167,6 @@ tell application "System Events"
     
     delay 1
     
-    -- 點擊 Bitmap Font 窗口中的 Settings 按鈕
-    try
-      tell process "ShoeBox"
-        -- 找到 Bitmap Font 窗口（位置在 {520, 25} 附近的窗口）
-        set bitmapWindow to missing value
-        set allWindows to every window
-        
-        repeat with w in allWindows
-          try
-            set windowPos to position of w
-            set windowSize to size of w
-            set windowName to name of w
-            set windowX to item 1 of windowPos
-            set windowY to item 2 of windowPos
-            set windowWidth to item 1 of windowSize
-            set windowHeight to item 2 of windowSize
-            
-            -- 根據位置和大小識別 Bitmap Font 窗口
-            -- 通常在 {520, 25} 位置，大小約 {416, 313}
-            if windowX > 400 and windowX < 600 and windowY < 100 and windowWidth > 300 and windowHeight > 200 then
-              set bitmapWindow to w
-              set frontmost of w to true
-              delay 0.5
-              log "找到 Bitmap Font 窗口: 位置=" & windowX & "," & windowY & " 大小=" & windowWidth & "x" & windowHeight
-              exit repeat
-            end if
-          end try
-        end repeat
-        
-        -- 如果找到 Bitmap Font 窗口，動態計算 Settings 按鈕位置
-        if bitmapWindow is not missing value then
-          set windowPos to position of bitmapWindow
-          set windowSize to size of bitmapWindow
-          set windowX to item 1 of windowPos
-          set windowY to item 2 of windowPos
-          set windowWidth to item 1 of windowSize
-          set windowHeight to item 2 of windowSize
-          
-          -- Settings 按鈕位置修正為 780,320
-          set settingsButtonX to 780
-          set settingsButtonY to 320
-          
-          log "Bitmap Font 窗口位置: " & windowX & "," & windowY
-          log "Settings 按鈕位置: " & settingsButtonX & "," & settingsButtonY
-          
-          delay 1
-          do shell script "/opt/homebrew/bin/cliclick m:" & settingsButtonX & "," & settingsButtonY
-          delay 0.3
-          do shell script "/opt/homebrew/bin/cliclick c:" & settingsButtonX & "," & settingsButtonY
-          delay 1
-          
-          log "✅ 已點擊 Settings 按鈕"
-          
-        else
-          log "❌ 未找到 Bitmap Font 窗口"
-        end if
-        
-        -- 等待 Bitmap Font Settings 窗口出現
-        delay 2
-        
-        -- 檢查 Settings 窗口是否已出現並移動位置
-        -- Settings 窗口通常比較高（height > 500）且比較窄（width < 400）
-        set allWindows to every window
-        repeat with w in allWindows
-          try
-            set windowPos to position of w
-            set windowSize to size of w
-            set windowX to item 1 of windowPos
-            set windowY to item 2 of windowPos
-            set windowWidth to item 1 of windowSize
-            set windowHeight to item 2 of windowSize
-            
-            -- 根據大小識別 Settings 窗口：高度 > 500，寬度 < 400
-            if windowHeight > 500 and windowWidth < 400 then
-              set position of w to {970, 23}  -- 移動到最右邊
-              set size of w to {350, 600}     -- 調整大小
-              log "✅ Bitmap Font Settings 窗口已定位: " & windowWidth & "x" & windowHeight
-              exit repeat
-            end if
-          end try
-        end repeat
-        
-      end tell
-    on error errMsg
-      log "❌ 點擊 Settings 按鈕失敗: " & errMsg
-    end try
-    
-    -- 移動滑鼠到 Bitmap Font Settings 窗口準備下一步操作
-    do shell script "/opt/homebrew/bin/cliclick m:1100,100"
-    delay 0.5
 
   end try
 end tell
