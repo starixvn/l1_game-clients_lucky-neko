@@ -51,6 +51,11 @@ export_config_to_env() {
     local export_result_name=$(get_config ".directories.export_result")
     export CONFIG_EXPORT_DIR="$(get_directory "font_bitmap")/$export_result_name"
     
+    # 配置文件路徑
+    local project_root=$(get_path "project_root")
+    export CONFIG_FONTS_CONFIG_FILE="$project_root/config/shoebox-config/fonts-config.json"
+    export CONFIG_IMAGE_HEIGHTS_FILE="$project_root/config/shoebox-config/image-heights.json"
+    
     # 延遲設定
     export CONFIG_FINDER_OPEN_DELAY=$(get_delay "finder_open")
     export CONFIG_SHOEBOX_OPEN_DELAY=$(get_delay "shoebox_open")

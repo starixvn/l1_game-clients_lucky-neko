@@ -138,9 +138,8 @@ tell application "System Events"
     delay 1
     log "✅ 已點擊 Advanced 按鈕"
 
-    -- 根據字體文件名稱決定配置文件路徑
-    set configFileName to configKey & "-config.json"
-    set configFilePath to "/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/config/shoebox-config/" & configFileName
+    -- 使用統一的字體配置文件
+    set configFilePath to (do shell script "echo $CONFIG_FONTS_CONFIG_FILE")
     
     log "📄 配置文件路徑: " & configFilePath
     
@@ -194,8 +193,8 @@ tell application "System Events"
         delay 0.5
 
         -- 輸入新的 File Format Outer 文字
-        -- 先讀取 image-heights.json 找到 font-multiplier 的 height 值
-        set imageHeightsPath to "/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/config/shoebox-config/image-heights.json"
+        -- 先讀取 image-heights.json 找到對應字體的 height 值
+        set imageHeightsPath to (do shell script "echo $CONFIG_IMAGE_HEIGHTS_FILE")
         set imageHeightsContent to do shell script "cat " & quoted form of imageHeightsPath
         
         -- 使用 jq 找到目標字體文件的 height 值
