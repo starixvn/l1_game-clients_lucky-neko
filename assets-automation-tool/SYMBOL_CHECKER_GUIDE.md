@@ -1,5 +1,17 @@
 # 資源檢查工具 (Assets Checker)
 
+### 需求
+```
+我需要一個可擴充性的功能，可以檢查資源是否存在，以及檢查資源是否正確
+但是每個資料夾的檢查方式不同，所以需要一個可擴充性的功能
+1. 檢查資源是否存在
+2. 第一個是 src/assets/resources/symbol-spines 資料夾
+3. symbol-spines 資料夾 裡面有symbol-0.json ~ symbol-10.json 共13個檔案
+4. 檢查 symbol-0.json ~ symbol-9.json 裡面 animations 的 "explode", "highlight", "idle" 三個動畫是否存在，不可以拼錯字
+5. 檢查 symbol-10.json ~ symbol-13.json 裡面 animations 的 "highlight", "idle" 二個動畫是否存在，不可以拼錯字
+6. symbol.atlas 是否有 symbol.webp 這個字串，以及該資料夾是否有 symbol.webp 這個檔案
+```
+
 這是一個可擴充的資源檢查系統，用於驗證專案中的資源檔案是否正確。
 
 ## 使用方法
@@ -8,13 +20,13 @@
 
 ```bash
 # 在 assets-automation-tool 目錄下執行
-npm run check-assets
+npm run symbol-checker-cli
 
 # 或直接執行
-node src/scripts/check-assets.js
+node src/scripts/symbol-checker-cli.js
 
 # 指定特定路徑
-node src/scripts/check-assets.js /path/to/project
+node src/scripts/symbol-checker-cli.js /path/to/project
 ```
 
 ### 目前支援的檢查

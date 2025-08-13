@@ -13,6 +13,8 @@ const TWO_D = '2d';
 const THREE_D = '3d';
 const SPECIFIC = 'specific';
 const TEXTURE_PACKER = 'texture-packer';
+const SYMBOL_CHECKER = 'symbol-checker';
+const FONT_BITMAP_HANDLER = 'font-bitmap-handler';
 
 class AssetsAutomationCLI {
     constructor() {
@@ -42,22 +44,32 @@ class AssetsAutomationCLI {
         logger.info(`   2. ${DOWNLOAD}  - Download assets from Google Drive`);
         logger.info(`   3. ${COPY}  - Copy/sync downloaded assets to project`);
         logger.info(`   4. ${TEXTURE_PACKER}  - Pack textures`);
+        logger.info(`   5. ${SYMBOL_CHECKER}  - Symbol checker`);
+        logger.info(`   6. ${FONT_BITMAP_HANDLER}  - Font bitmap handler`);
 
-        const choice = await this.askSelect('Please select operation (1-4): ', ['1', '2', '3', '4', FULL, DOWNLOAD, COPY, TEXTURE_PACKER]);
+        const choice = await this.askSelect('Please select operation (1-6): ', ['1', '2', '3', '4', '5', '6', FULL, DOWNLOAD, COPY, TEXTURE_PACKER, SYMBOL_CHECKER, FONT_BITMAP_HANDLER]);
         const operationMap = {
             '1': FULL,
             '2': DOWNLOAD,
             '3': COPY,
             '4': TEXTURE_PACKER,
+            '5': SYMBOL_CHECKER,
+            '6': FONT_BITMAP_HANDLER,
             [FULL]: FULL,
             [DOWNLOAD]: DOWNLOAD,
             [COPY]: COPY,
             [TEXTURE_PACKER]: TEXTURE_PACKER,
+            [SYMBOL_CHECKER]: SYMBOL_CHECKER,
+            [FONT_BITMAP_HANDLER]: FONT_BITMAP_HANDLER,
         };
         const operation = operationMap[choice];
 
         if (operation === TEXTURE_PACKER) {
             await this.promptTexturePacker();
+        } else if (operation === SYMBOL_CHECKER) {
+            await this.executeSymbolChecker();
+        } else if (operation === FONT_BITMAP_HANDLER) {
+            await this.promptFontBitmapHandler();
         } else {
             await this.promptTargetSelection(operation);
         }
@@ -205,6 +217,113 @@ class AssetsAutomationCLI {
         // 傳入主 CLI 的 readline 介面，避免衝突
         const texturePacker = new TexturePackerCLI(this.rl);
         await texturePacker.run();
+    }
+
+    async executeSymbolChecker() {
+        logger.info('\n🔍 Starting symbol checker...');
+        const { spawn } = require('child_process');
+        const path = require('path');
+        
+        return new Promise((resolve, reject) => {
+            const process = spawn('node', ['src/scripts/symbol-checker-cli.js'], {
+                stdio: 'inherit',
+                cwd: path.resolve(__dirname, '../..')
+            });
+
+            process.on('close', (code) => {
+                if (code === 0) {
+                    logger.success('✅ Symbol checker completed successfully');
+                    resolve();
+                } else {
+                    logger.error(`❌ Symbol checker failed with code ${code}`);
+                    reject(new Error(`Process exited with code ${code}`));
+                }
+            });
+
+            process.on('error', (error) => {
+                logger.error(`❌ Symbol checker error: ${error.message}`);
+                reject(error);
+            });
+        });
+    }
+
+    async promptFontBitmapHandler() {
+        logger.info('\n🔤 Font Bitmap Handler:');
+        logger.info('   1. shoebox-auto - Run shoebox automation');
+        logger.info('   2. get-height   - Get height information');
+
+        const choice = await this.askSelect('Please select option (1-2): ', ['1', '2']);
+        
+        if (choice === '1') {
+            await this.executeShoeboxAuto();
+        } else if (choice === '2') {
+            await this.executeGetHeight();
+        }
+    }
+
+    async executeShoeboxAuto() {
+        logger.info('\n📦 Starting shoebox auto...');
+        const { spawn } = require('child_process');
+        const path = require('path');
+        
+        return new Promise((resolve, reject) => {
+            // 設定正確的工作目錄為 shoebox-auto 資料夾
+            const shoeboxAutoDir = path.resolve(__dirname, 'shoebox-auto');
+            const scriptPath = './run-with-interrupt.sh';
+            
+            const process = spawn(scriptPath, ['all'], {
+                stdio: 'inherit',
+                cwd: shoeboxAutoDir,
+                shell: true
+            });
+
+            process.on('close', (code) => {
+                if (code === 0) {
+                    logger.success('✅ Shoebox auto completed successfully');
+                    resolve();
+                } else {
+                    logger.error(`❌ Shoebox auto failed with code ${code}`);
+                    reject(new Error(`Process exited with code ${code}`));
+                }
+            });
+
+            process.on('error', (error) => {
+                logger.error(`❌ Shoebox auto error: ${error.message}`);
+                reject(error);
+            });
+        });
+    }
+
+    async executeGetHeight() {
+        logger.info('\n📏 Starting get height...');
+        const { spawn } = require('child_process');
+        const path = require('path');
+        
+        return new Promise((resolve, reject) => {
+            // 直接執行 get-height.js 腳本
+            const scriptPath = path.resolve(__dirname, 'shoebox-auto', 'get-height.js');
+            
+            const process = spawn('node', [scriptPath], {
+                stdio: 'inherit',
+                cwd: path.resolve(__dirname, '../..'),
+                shell: true
+            });
+
+            process.on('close', (code) => {
+                if (code === 0) {
+                    logger.success('✅ Get height completed successfully');
+                    resolve();
+                } else {
+                    logger.error(`❌ Get height failed with code ${code}`);
+                    reject(new Error(`Process exited with code ${code}`));
+                }
+            });
+
+            process.on('error', (error) => {
+                logger.error(`❌ Get height error: ${error.message}`);
+                reject(error);
+            });
+        });
     }
 }
 
