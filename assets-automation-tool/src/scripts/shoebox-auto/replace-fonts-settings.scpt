@@ -6,8 +6,38 @@ tell application "System Events"
     set frontmost to true
     delay 0.5
 
-    -- 使用 shoebox fonts config 設定檔案
-    do shell script "open -a 'Shoebox' /Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/config/shoebox-config/font-multiplier.sbx"
+    -- 動態獲取要處理的字體文件名稱和對應的配置
+    set targetFontFile to "font-multiplier.png"  -- 預設值
+    try
+      set targetFontFile to (do shell script "echo $TARGET_FONT_FILE")
+      if targetFontFile is "" then
+        set targetFontFile to "font-multiplier.png"
+      end if
+    on error
+      set targetFontFile to "font-multiplier.png"
+    end try
+    
+    log "🎯 目標字體文件: " & targetFontFile
+    
+    -- 根據字體文件名稱決定配置文件和配置鍵
+    set configKey to "font-multiplier"
+    set sbxFile to "font-multiplier.sbx"
+    
+    if targetFontFile is "font-multiplier.png" then
+      set configKey to "font-multiplier"
+      set sbxFile to "font-multiplier.sbx"
+    else if targetFontFile is "font-number.png" then
+      set configKey to "font-number"
+      set sbxFile to "font-number.sbx"
+    else if targetFontFile is "font-win-money.png" then
+      set configKey to "font-win-money"
+      set sbxFile to "font-win-money.sbx"
+    end if
+    
+    log "📁 使用配置: " & configKey & " (" & sbxFile & ")"
+    
+    -- 使用對應的 shoebox config 設定檔案
+    do shell script "open -a 'Shoebox' /Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/config/shoebox-config/" & sbxFile
     delay 1
 
     -- 點擊 Bitmap Font 窗口中的 Settings 按鈕
@@ -103,12 +133,17 @@ tell application "System Events"
     delay 1
     log "✅ 已點擊 Advanced 按鈕"
 
+    -- 根據字體文件名稱決定配置文件路徑
+    set configFileName to configKey & "-config.json"
+    set configFilePath to "/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/config/shoebox-config/" & configFileName
+    
+    log "📄 配置文件路徑: " & configFilePath
+    
     -- 讀取配置文件中的 File Format Loop 設定
-    set configFilePath to "/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/config/shoebox-config/font-multiplier-config.json"
     try
         set configContent to do shell script "cat " & quoted form of configFilePath
-        -- 使用 jq 解析 JSON 並提取 font-multiplier.fileFormat.loop 的值
-        set fileFormatLoop to do shell script "echo " & quoted form of configContent & " | jq -r '.\"font-multiplier\".fileFormat.loop'"
+        -- 使用 jq 解析 JSON 並提取對應配置的 fileFormat.loop 值
+        set fileFormatLoop to do shell script "echo " & quoted form of configContent & " | jq -r '.\"" & configKey & "\".fileFormat.loop'"
         log "✅ 成功讀取 File Format Loop 設定: " & fileFormatLoop
         
         -- 滑鼠移動到 File Format Loop 位置
@@ -136,8 +171,8 @@ tell application "System Events"
         -- 滑鼠移動到 File Format Outer 位置 230,462
         do shell script "/opt/homebrew/bin/cliclick m:230,462"
         delay 0.5
-        -- 使用 jq 解析 JSON 並提取 font-multiplier.fileFormat.outer 的值
-        set fileFormatOuter to do shell script "echo " & quoted form of configContent & " | jq -r '.\"font-multiplier\".fileFormat.outer'"
+        -- 使用 jq 解析 JSON 並提取對應配置的 fileFormat.outer 值
+        set fileFormatOuter to do shell script "echo " & quoted form of configContent & " | jq -r '.\"" & configKey & "\".fileFormat.outer'"
         log "✅ 成功讀取 File Format Outer 設定: " & fileFormatOuter
 
         -- 滑鼠移動到 File Format Outer 位置 230,462
@@ -158,15 +193,15 @@ tell application "System Events"
         set imageHeightsPath to "/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/config/shoebox-config/image-heights.json"
         set imageHeightsContent to do shell script "cat " & quoted form of imageHeightsPath
         
-        -- 使用 jq 找到 font-multiplier.png 的 height 值
-        set fontMultiplierHeight to do shell script "echo " & quoted form of imageHeightsContent & " | jq -r '.heights[] | select(.file == \"font-multiplier.png\") | .height'"
-        log "✅ 從 image-heights.json 讀取到 font-multiplier height: " & fontMultiplierHeight
+        -- 使用 jq 找到目標字體文件的 height 值
+        set fontHeight to do shell script "echo " & quoted form of imageHeightsContent & " | jq -r '.heights[] | select(.file == \"" & targetFontFile & "\") | .height'"
+        log "✅ 從 image-heights.json 讀取到 " & targetFontFile & " height: " & fontHeight
         
         -- 取得原始的 fileFormat.outer 模板
-        set fileFormatOuterTemplate to do shell script "echo " & quoted form of configContent & " | jq -r '.\"font-multiplier\".fileFormat.outer'"
+        set fileFormatOuterTemplate to do shell script "echo " & quoted form of configContent & " | jq -r '.\"" & configKey & "\".fileFormat.outer'"
         
         -- 使用 sed 將模板中的 "變數" 替換為實際的 height 值
-        set fileFormatOuter to do shell script "echo " & quoted form of fileFormatOuterTemplate & " | sed 's/變數/" & fontMultiplierHeight & "/g'"
+        set fileFormatOuter to do shell script "echo " & quoted form of fileFormatOuterTemplate & " | sed 's/變數/" & fontHeight & "/g'"
         log "✅ 成功處理 File Format Outer 設定: " & fileFormatOuter
         
         -- 將處理好的 fileFormatOuter 內容設定到剪貼簿並貼上
@@ -177,7 +212,7 @@ tell application "System Events"
         
         log "✅ 已成功更新 File Format Outer 設定"
 
-        -- 使用 sed 將  195,772 txt Line Height 改為 fontMultiplierHeight
+        -- 使用 sed 將  195,772 txt Line Height 改為 fontHeight
         do shell script "/opt/homebrew/bin/cliclick m:195,772"
         delay 0.5
         do shell script "/opt/homebrew/bin/cliclick c:195,772"
@@ -187,7 +222,7 @@ tell application "System Events"
         delay 0.3
         key code 51  -- Delete key
         delay 0.5
-        set the clipboard to fontMultiplierHeight
+        set the clipboard to fontHeight
         delay 0.3
         key code 9 using command down  -- Cmd+V
         delay 0.5

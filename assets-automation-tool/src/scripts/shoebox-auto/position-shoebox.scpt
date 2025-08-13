@@ -65,7 +65,37 @@ tell application "System Events"
   -- 等待排序完成
   delay 1
   
-  -- 點擊並拖曳 font-multiplier.png
+  -- 動態獲取要處理的字體文件名稱
+  set targetFontFile to "font-multiplier.png"  -- 預設值
+  try
+    set targetFontFile to (do shell script "echo $TARGET_FONT_FILE")
+    if targetFontFile is "" then
+      set targetFontFile to "font-multiplier.png"
+    end if
+  on error
+    set targetFontFile to "font-multiplier.png"
+  end try
+  
+  log "🎯 目標字體文件: " & targetFontFile
+  
+  -- 根據字體文件名稱計算點擊位置
+  set clickX to 560
+  set clickY to 560
+  
+  if targetFontFile is "font-multiplier.png" then
+    set clickX to 560
+    set clickY to 560
+  else if targetFontFile is "font-number.png" then
+    set clickX to 680
+    set clickY to 620  -- 假設 font-number.png 在下方一點
+  else if targetFontFile is "font-win-money.png" then
+    set clickX to 780
+    set clickY to 680  -- 假設 font-win-money.png 在更下方
+  end if
+  
+  log "📍 點擊位置: " & clickX & "," & clickY
+  
+  -- 點擊並拖曳指定的字體文件
   try
     -- 確保 Finder 窗口在前台
     tell process "Finder"
@@ -73,18 +103,14 @@ tell application "System Events"
     end tell
     delay 1
     
-    -- 移動滑鼠到 font-multiplier.png 位置並確認
-    -- do shell script "/opt/homebrew/bin/cliclick m:690,560"
-    -- delay 0.8
-    
     -- 點擊確認文件位置
-    do shell script "/opt/homebrew/bin/cliclick c:690,560"
+    do shell script "/opt/homebrew/bin/cliclick c:" & clickX & "," & clickY
     delay 0.5
     
     -- 開始拖拉：移動到起始位置並按住滑鼠
-    do shell script "/opt/homebrew/bin/cliclick m:690,560"
+    do shell script "/opt/homebrew/bin/cliclick m:" & clickX & "," & clickY
     delay 0.5
-    do shell script "/opt/homebrew/bin/cliclick dd:690,560"
+    do shell script "/opt/homebrew/bin/cliclick dd:" & clickX & "," & clickY
     delay 1
     
     -- 確保 ShoeBox 窗口在前台

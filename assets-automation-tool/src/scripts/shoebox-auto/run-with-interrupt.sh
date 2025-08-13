@@ -1,6 +1,29 @@
 #!/bin/bash
 
 # ShoeBox 自動化腳本執行器 (支持 Ctrl+C 中斷)
+# 使用方式: 
+#   ./run-with-interrupt.sh                           # 處理 font-multiplier.png (預設)
+#   ./run-with-interrupt.sh font-multiplier.png       # 處理 font-multiplier.png
+#   ./run-with-interrupt.sh font-number.png           # 處理 font-number.png  
+#   ./run-with-interrupt.sh font-win-money.png        # 處理 font-win-money.png
+
+# 檢查命令行參數，設定要處理的字體文件
+FONT_FILE="${1:-font-multiplier.png}"
+
+# 驗證支援的字體文件
+case "$FONT_FILE" in
+    "font-multiplier.png"|"font-number.png"|"font-win-money.png")
+        echo "🎯 目標字體文件: $FONT_FILE"
+        ;;
+    *)
+        echo "❌ 錯誤: 不支援的字體文件 '$FONT_FILE'"
+        echo "💡 支援的字體文件: font-multiplier.png, font-number.png, font-win-money.png"
+        exit 1
+        ;;
+esac
+
+# 匯出環境變數供 AppleScript 使用
+export TARGET_FONT_FILE="$FONT_FILE"
 
 echo "🚀 開始執行 ShoeBox 自動化流程..."
 echo "💡 按 Ctrl+C 可以隨時中斷腳本"
