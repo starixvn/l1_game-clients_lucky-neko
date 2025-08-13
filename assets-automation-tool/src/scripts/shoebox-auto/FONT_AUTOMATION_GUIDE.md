@@ -26,6 +26,10 @@ shoebox-auto/
 ├── position-shoebox-refactored.scpt    # 視窗定位腳本 (重構版)
 ├── replace-fonts-settings-refactored.scpt # 設定替換腳本 (重構版)
 ├── font-config-manager.js              # 配置管理器
+├── find-file-position.sh               # 檔案位置搜尋工具 (新)
+├── smart-drag-tool.sh                  # 智能拖拽工具 (新)
+├── file-position-detector.scpt         # AppleScript 位置偵測器 (新)
+├── smart-file-dragger.scpt             # AppleScript 智能拖拽器 (新)
 └── FONT_AUTOMATION_GUIDE.md           # 本說明文件
 
 # 舊版腳本 (保留供參考)
@@ -90,6 +94,38 @@ node font-config-manager.js list
 - 📝 **模組化設計**: 函式化處理各個設定步驟
 - 🔄 **動態替換**: 根據實際圖片高度調整參數
 - 🎛️ **完整設定**: Loop, Outer, LineHeight 全自動配置
+
+### 5. 檔案位置搜尋工具 (`find-file-position.sh`)
+- 🔍 **多重搜尋策略**: UI搜尋、網格搜尋、OCR識別、視覺搜尋
+- 🎯 **精確定位**: 自動找到檔案在螢幕上的確切座標
+- 🛡️ **備援機制**: 搜尋失敗時使用預設位置
+
+```bash
+# 搜尋檔案位置
+./find-file-position.sh font-multiplier.png
+
+# 使用特定搜尋方法
+./find-file-position.sh font-number.png grid
+
+# 顯示說明
+./find-file-position.sh --help
+```
+
+### 6. 智能拖拽工具 (`smart-drag-tool.sh`)
+- 🎯 **自動搜尋**: 結合檔案搜尋自動找到源位置
+- 🔄 **智能拖拽**: 自動執行完整的拖拽流程
+- 📊 **結果驗證**: 自動驗證拖拽操作結果
+
+```bash
+# 拖拽到預設位置
+./smart-drag-tool.sh font-multiplier.png
+
+# 拖拽到指定位置
+./smart-drag-tool.sh font-number.png 200 300
+
+# 顯示說明
+./smart-drag-tool.sh --help
+```
 
 ## 📊 支援的字體類型
 

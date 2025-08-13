@@ -41,8 +41,8 @@ on run argv
         -- 設定 Finder 視窗
         my setupFinderWindow()
         
-        -- 拖拽指定的圖片文件
-        my dragImageToShoeBox(imagePosition)
+        -- 使用智能拖拽工具拖拽指定的圖片文件
+        my smartDragImageToShoeBox(imageFileName)
         
         -- 智能設定 Bitmap Font 窗口位置
         my setupBitmapFontWindow()
@@ -103,9 +103,49 @@ on setupFinderWindow()
     end tell
 end setupFinderWindow
 
--- 拖拽圖片到 ShoeBox
-on dragImageToShoeBox(imagePosition)
+-- 使用智能拖拽工具拖拽圖片到 ShoeBox
+on smartDragImageToShoeBox(imageFileName)
     try
+        log "🎯 開始智能拖拽: " & imageFileName
+        
+        -- 使用我們的智能拖拽工具
+        set scriptPath to (path to me as text)
+        set scriptFolder to (characters 1 thru -((length of (name of (info for (path to me)))) + 1) of scriptPath) as text
+        set toolPath to scriptFolder & "smart-drag-tool.sh"
+        
+        -- 轉換為 POSIX 路徑
+        set posixToolPath to POSIX path of toolPath
+        
+        -- 執行智能拖拽工具
+        set dragResult to do shell script "cd " & quoted form of (POSIX path of scriptFolder) & " && ./smart-drag-tool.sh " & quoted form of imageFileName & " 110 110"
+        
+        log "✅ 智能拖拽完成: " & dragResult
+        
+    on error errMsg
+        log "❌ 智能拖拽失敗，使用備用方法: " & errMsg
+        
+        -- 備用方法：使用傳統拖拽
+        my fallbackDragMethod(imageFileName)
+    end try
+end smartDragImageToShoeBox
+
+-- 備用拖拽方法
+on fallbackDragMethod(imageFileName)
+    try
+        log "🔄 使用備用拖拽方法..."
+        
+        -- 根據檔案名稱確定位置 (基於實際測試的準確位置)
+        if imageFileName contains "multiplier" then
+            set imagePosition to {254, 387}  -- 左上角位置
+        else if imageFileName contains "number" then
+            set imagePosition to {400, 470}  -- 右下角位置 (用戶測試)
+        else
+            set imagePosition to {254, 387}  -- 預設左上角
+        end if
+        
+        set imageX to item 1 of imagePosition
+        set imageY to item 2 of imagePosition
+        
         -- 確保 Finder 在前台
         tell application "System Events"
             tell process "Finder"
@@ -114,22 +154,18 @@ on dragImageToShoeBox(imagePosition)
         end tell
         delay 1
         
-        set imageX to item 1 of imagePosition
-        set imageY to item 2 of imagePosition
-        
-        log "📌 準備拖拽圖片，位置: " & imageX & "," & imageY
-        
-        -- 點擊確認文件位置
+        -- 執行成功的拖拽方法 (參考原本的 position-shoebox.scpt)
+        -- 步驟1: 點擊確認檔案位置
         do shell script "/opt/homebrew/bin/cliclick c:" & imageX & "," & imageY
         delay 0.5
         
-        -- 開始拖拽
+        -- 步驟2: 開始拖拽
         do shell script "/opt/homebrew/bin/cliclick m:" & imageX & "," & imageY
         delay 0.5
         do shell script "/opt/homebrew/bin/cliclick dd:" & imageX & "," & imageY
         delay 1
         
-        -- 確保 ShoeBox 在前台
+        -- 步驟3: 切換到 ShoeBox
         tell application "System Events"
             tell process "ShoeBox"
                 set frontmost to true
@@ -137,20 +173,22 @@ on dragImageToShoeBox(imagePosition)
         end tell
         delay 0.5
         
-        -- 移動到目標位置並放下
+        -- 步驟4: 分段移動到目標位置
         do shell script "/opt/homebrew/bin/cliclick dm:165,192"
         delay 0.5
         do shell script "/opt/homebrew/bin/cliclick dm:110,110"
         delay 0.8
+        
+        -- 步驟5: 結束拖拽
         do shell script "/opt/homebrew/bin/cliclick du:110,110"
         delay 2
         
-        log "✅ 圖片拖拽完成"
+        log "✅ 備用拖拽完成"
         
     on error errMsg
-        log "❌ 拖拽圖片失敗: " & errMsg
+        log "❌ 備用拖拽也失敗: " & errMsg
     end try
-end dragImageToShoeBox
+end fallbackDragMethod
 
 -- 智能設定 Bitmap Font 窗口位置
 on setupBitmapFontWindow()
