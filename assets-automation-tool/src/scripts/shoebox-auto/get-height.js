@@ -3,9 +3,9 @@ const fsp = fs.promises;
 const path = require('path');
 const { imageSize } = require('image-size');
 
-const CONFIG_FILE = '/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/config/generate-heights-config.json';
+const CONFIG_FILE = '/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/config/shoebox-config/generate-heights-config.json';
 const DEFAULT_OUTPUT = 'image-heights.json';
-const OUTPUT_DIR = '/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/config';
+const OUTPUT_DIR = '/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/config/shoebox-config';
 
 async function loadConfig() {
   const cfgPath = CONFIG_FILE;

@@ -41,8 +41,8 @@ tell application "System Events"
     set frontmost to true
     try
       -- 將 Finder 定位到 ShoeBox 下方
-      set position of window 1 to {0, 250}
-      set size of window 1 to {500, 400}
+      set position of window 1 to {500, 450}
+      set size of window 1 to {500, 500}
     end try
   end tell
   
@@ -74,17 +74,17 @@ tell application "System Events"
     delay 1
     
     -- 移動滑鼠到 font-multiplier.png 位置並確認
-    -- do shell script "/opt/homebrew/bin/cliclick m:220,355"
+    -- do shell script "/opt/homebrew/bin/cliclick m:690,560"
     -- delay 0.8
     
     -- 點擊確認文件位置
-    do shell script "/opt/homebrew/bin/cliclick c:220,355"
+    do shell script "/opt/homebrew/bin/cliclick c:690,560"
     delay 0.5
     
     -- 開始拖拉：移動到起始位置並按住滑鼠
-    do shell script "/opt/homebrew/bin/cliclick m:220,355"
+    do shell script "/opt/homebrew/bin/cliclick m:690,560"
     delay 0.5
-    do shell script "/opt/homebrew/bin/cliclick dd:220,355"
+    do shell script "/opt/homebrew/bin/cliclick dd:690,560"
     delay 1
     
     -- 確保 ShoeBox 窗口在前台

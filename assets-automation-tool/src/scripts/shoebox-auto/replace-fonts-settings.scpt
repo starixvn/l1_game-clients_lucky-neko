@@ -83,7 +83,7 @@ tell application "System Events"
             
             -- 根據大小識別 Settings 窗口：高度 > 500
             if windowHeight > 500
-              set position of w to {970, 23}  -- 移動到最右邊
+              set position of w to {0, 250}  -- 移動到新位置
               set size of w to {350, 600}     -- 調整大小
               log "✅ Bitmap Font Settings 窗口已定位: " & windowWidth & "x" & windowHeight
               exit repeat
@@ -97,14 +97,14 @@ tell application "System Events"
     
     -- 移動滑鼠到 Bitmap Font Settings 窗口內部準備下一步操作
     -- 點擊 Advanced 按鈕
-    do shell script "/opt/homebrew/bin/cliclick m:1120,70"
+    do shell script "/opt/homebrew/bin/cliclick m:150,297"
     delay 0.5
-    do shell script "/opt/homebrew/bin/cliclick c:1120,70"
+    do shell script "/opt/homebrew/bin/cliclick c:150,297"
     delay 1
     log "✅ 已點擊 Advanced 按鈕"
 
     -- 讀取配置文件中的 File Format Loop 設定
-    set configFilePath to "/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/config/font-multiplier-config.json"
+    set configFilePath to "/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/config/shoebox-config/font-multiplier-config.json"
     try
         set configContent to do shell script "cat " & quoted form of configFilePath
         -- 使用 jq 解析 JSON 並提取 font-multiplier.fileFormat.loop 的值
@@ -112,11 +112,11 @@ tell application "System Events"
         log "✅ 成功讀取 File Format Loop 設定: " & fileFormatLoop
         
         -- 滑鼠移動到 File Format Loop 位置
-        do shell script "/opt/homebrew/bin/cliclick m:1200,200"
+        do shell script "/opt/homebrew/bin/cliclick m:230,427"
         delay 0.5
         
         -- 滑鼠點擊 File Format Loop 文字編輯視窗並選取所有文字
-        do shell script "/opt/homebrew/bin/cliclick c:1200,200"
+        do shell script "/opt/homebrew/bin/cliclick c:230,427"
         delay 0.5
         
         -- 選取全部文字 (Cmd+A) 然後刪除
@@ -133,19 +133,19 @@ tell application "System Events"
         
         log "✅ 已成功更新 File Format Loop 設定"
         
-        -- 滑鼠移動到 File Format Outer 位置 1200,235
-        do shell script "/opt/homebrew/bin/cliclick m:1200,235"
+        -- 滑鼠移動到 File Format Outer 位置 230,462
+        do shell script "/opt/homebrew/bin/cliclick m:230,462"
         delay 0.5
         -- 使用 jq 解析 JSON 並提取 font-multiplier.fileFormat.outer 的值
         set fileFormatOuter to do shell script "echo " & quoted form of configContent & " | jq -r '.\"font-multiplier\".fileFormat.outer'"
         log "✅ 成功讀取 File Format Outer 設定: " & fileFormatOuter
 
-        -- 滑鼠移動到 File Format Outer 位置 1200,235
-        do shell script "/opt/homebrew/bin/cliclick m:1200,235"
+        -- 滑鼠移動到 File Format Outer 位置 230,462
+        do shell script "/opt/homebrew/bin/cliclick m:230,462"
         delay 0.5
 
         -- 滑鼠點擊 File Format Outer 文字編輯視窗並選取所有文字
-        do shell script "/opt/homebrew/bin/cliclick c:1200,235"
+        do shell script "/opt/homebrew/bin/cliclick c:230,462"
         delay 0.5
         -- 選取全部文字 (Cmd+A) 然後刪除
         key code 0 using command down  -- Cmd+A
@@ -155,7 +155,7 @@ tell application "System Events"
 
         -- 輸入新的 File Format Outer 文字
         -- 先讀取 image-heights.json 找到 font-multiplier 的 height 值
-        set imageHeightsPath to "/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/config/image-heights.json"
+        set imageHeightsPath to "/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/config/shoebox-config/image-heights.json"
         set imageHeightsContent to do shell script "cat " & quoted form of imageHeightsPath
         
         -- 使用 jq 找到 font-multiplier.png 的 height 值
@@ -177,10 +177,10 @@ tell application "System Events"
         
         log "✅ 已成功更新 File Format Outer 設定"
 
-        -- 使用 sed 將  1165,545 txt Line Height 改為 fontMultiplierHeight
-        do shell script "/opt/homebrew/bin/cliclick m:1165,545"
+        -- 使用 sed 將  195,772 txt Line Height 改為 fontMultiplierHeight
+        do shell script "/opt/homebrew/bin/cliclick m:195,772"
         delay 0.5
-        do shell script "/opt/homebrew/bin/cliclick c:1165,545"
+        do shell script "/opt/homebrew/bin/cliclick c:195,772"
         delay 0.5
         -- 選取全部文字 (Cmd+A) 然後刪除
         key code 0 using command down  -- Cmd+A
@@ -195,14 +195,14 @@ tell application "System Events"
 
 
         -- 點擊 Apply 按鈕
-        do shell script "/opt/homebrew/bin/cliclick m:1300,645"
+        do shell script "/opt/homebrew/bin/cliclick m:330,872"
         delay 0.5
-        do shell script "/opt/homebrew/bin/cliclick c:1300,645"
+        do shell script "/opt/homebrew/bin/cliclick c:330,872"
         delay 0.5
         -- 點擊 Apply X 關閉按鈕
-        do shell script "/opt/homebrew/bin/cliclick m:1330,43"
+        do shell script "/opt/homebrew/bin/cliclick m:360,270"
         delay 0.5
-        do shell script "/opt/homebrew/bin/cliclick c:1330,43"
+        do shell script "/opt/homebrew/bin/cliclick c:360,270"
         delay 0.5
         
         -- 點擊 Save 按鈕
