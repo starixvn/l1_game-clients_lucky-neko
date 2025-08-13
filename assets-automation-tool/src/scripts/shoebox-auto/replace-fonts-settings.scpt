@@ -77,9 +77,14 @@ tell application "System Events"
           set windowWidth to item 1 of windowSize
           set windowHeight to item 2 of windowSize
           
-          -- Settings 按鈕位置修正為 780,320
-          set settingsButtonX to 780
-          set settingsButtonY to 320
+          -- 根據字體文件動態設定 Settings 按鈕位置
+          if targetFontFile is "font-number.png" then
+            set settingsButtonX to 1000
+            set settingsButtonY to 340
+          else
+            set settingsButtonX to 780
+            set settingsButtonY to 320
+          end if
           
           log "Bitmap Font 窗口位置: " & windowX & "," & windowY
           log "Settings 按鈕位置: " & settingsButtonX & "," & settingsButtonY
@@ -240,12 +245,60 @@ tell application "System Events"
         do shell script "/opt/homebrew/bin/cliclick c:360,270"
         delay 0.5
         
+        -- 根據字體文件動態設定 Save 按鈕位置
+        if targetFontFile is "font-number.png" then
+          set saveButtonX to 1100
+          set saveButtonY to 340
+        else
+          set saveButtonX to 880
+          set saveButtonY to 318
+        end if
+        
         -- 點擊 Save 按鈕
-        do shell script "/opt/homebrew/bin/cliclick m:880,318"
+        do shell script "/opt/homebrew/bin/cliclick m:" & saveButtonX & "," & saveButtonY
         delay 0.5
-        do shell script "/opt/homebrew/bin/cliclick c:880,318"
+        do shell script "/opt/homebrew/bin/cliclick c:" & saveButtonX & "," & saveButtonY
         delay 1
         log "✅ 已點擊 Apply + Save 按鈕"
+        
+        -- 等待檔案產出
+        delay 3
+        
+        -- 移動產出檔案到 export-result 資料夾
+        try
+          set exportDir to "/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/output/downloads/font-bitmap/export-result"
+          
+          -- 根據字體文件名稱決定產出檔案名稱
+          set baseName to ""
+          if targetFontFile is "font-multiplier.png" then
+            set baseName to "font-multiplier"
+          else if targetFontFile is "font-number.png" then
+            set baseName to "font-number"
+          else if targetFontFile is "font-win-money.png" then
+            set baseName to "font-win-money"
+          end if
+          
+          if baseName is not "" then
+            set sourceDir to "/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/output/downloads/font-bitmap"
+            set fntFile to baseName & "-export.fnt"
+            set pngFile to baseName & "-export.png"
+            
+            -- 移動 .fnt 檔案
+            set fntSource to quoted form of (sourceDir & "/" & fntFile)
+            set fntTarget to quoted form of (exportDir & "/" & fntFile)
+            do shell script "if [ -f " & fntSource & " ]; then mv " & fntSource & " " & fntTarget & "; echo 'Moved " & fntFile & "'; else echo 'File " & fntFile & " not found'; fi"
+            
+            -- 移動 .png 檔案
+            set pngSource to quoted form of (sourceDir & "/" & pngFile)
+            set pngTarget to quoted form of (exportDir & "/" & pngFile)
+            do shell script "if [ -f " & pngSource & " ]; then mv " & pngSource & " " & pngTarget & "; echo 'Moved " & pngFile & "'; else echo 'File " & pngFile & " not found'; fi"
+            
+            log "✅ 已嘗試移動產出檔案到 export-result 資料夾: " & fntFile & ", " & pngFile
+          end if
+          
+        on error exportErr
+          log "❌ 移動檔案失敗: " & exportErr
+        end try
 
     on error errMsg
         log "❌ 讀取或設定 File Format 失敗: " & errMsg

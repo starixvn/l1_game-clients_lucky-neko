@@ -1,6 +1,11 @@
 -- 開啟 Finder 目錄
 do shell script "/usr/bin/open /Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/output/downloads/font-bitmap"
 
+-- 建立 export-result 資料夾（如果不存在）
+set exportDir to "/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/output/downloads/font-bitmap/export-result"
+do shell script "mkdir -p " & quoted form of exportDir
+log "✅ 確保 export-result 資料夾存在"
+
 -- 等待 Finder 開啟
 delay 2
 
@@ -79,18 +84,18 @@ tell application "System Events"
   log "🎯 目標字體文件: " & targetFontFile
   
   -- 根據字體文件名稱計算點擊位置
-  set clickX to 560
+  set clickX to 670
   set clickY to 560
   
   if targetFontFile is "font-multiplier.png" then
-    set clickX to 560
+    set clickX to 670
     set clickY to 560
   else if targetFontFile is "font-number.png" then
-    set clickX to 680
-    set clickY to 620  -- 假設 font-number.png 在下方一點
-  else if targetFontFile is "font-win-money.png" then
     set clickX to 780
-    set clickY to 680  -- 假設 font-win-money.png 在更下方
+    set clickY to 560
+  else if targetFontFile is "font-win-money.png" then
+    set clickX to 900
+    set clickY to 560 
   end if
   
   log "📍 點擊位置: " & clickX & "," & clickY
