@@ -1,19 +1,25 @@
+-- 從環境變數讀取配置
+set fontBitmapDir to (do shell script "echo $CONFIG_FONT_BITMAP_DIR")
+set exportDir to (do shell script "echo $CONFIG_EXPORT_DIR")
+set shoeboxApp to (do shell script "echo $CONFIG_SHOEBOX_APP")
+set finderOpenDelay to (do shell script "echo $CONFIG_FINDER_OPEN_DELAY")
+set shoeboxOpenDelay to (do shell script "echo $CONFIG_SHOEBOX_OPEN_DELAY")
+
 -- 開啟 Finder 目錄
-do shell script "/usr/bin/open /Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/output/downloads/font-bitmap"
+do shell script "/usr/bin/open " & quoted form of fontBitmapDir
 
 -- 建立 export-result 資料夾（如果不存在）
-set exportDir to "/Users/jaysonCheng/pentagon/lucky-neko/assets-automation-tool/output/downloads/font-bitmap/export-result"
 do shell script "mkdir -p " & quoted form of exportDir
 log "✅ 確保 export-result 資料夾存在"
 
 -- 等待 Finder 開啟
-delay 2
+delay finderOpenDelay
 
 -- 開啟 ShoeBox
-do shell script "/usr/bin/open -a /Applications/Shoebox.app"
+do shell script "/usr/bin/open -a " & quoted form of shoeboxApp
 
 -- 等待 ShoeBox 開啟
-delay 4
+delay shoeboxOpenDelay
 
 tell application "System Events"
   -- 智能設定 ShoeBox 視窗

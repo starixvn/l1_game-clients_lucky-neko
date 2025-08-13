@@ -7,20 +7,34 @@
 #   ./run-with-interrupt.sh font-number.png font-win-money.png # 處理多個檔案
 #   ./run-with-interrupt.sh all                               # 依序處理所有檔案
 
-# 定義支援的字體文件
-ALL_FONTS=("font-multiplier.png" "font-number.png" "font-win-money.png")
+# 載入配置助手
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/config-helper.sh"
+
+# 驗證配置並匯出環境變數
+if ! validate_config; then
+    echo "❌ 配置驗證失敗，請檢查 main-config.json"
+    exit 1
+fi
+
+export_config_to_env
+
+# 從配置文件讀取支援的字體文件（config-helper.sh 已檢查文件存在）
+MAIN_CONFIG_FILE="$SCRIPT_DIR/../../../config/shoebox-config/main-config.json"
+ALL_FONTS=()
+while IFS= read -r font; do
+    ALL_FONTS+=("$font")
+done < <(jq -r '.supported_fonts[]' "$MAIN_CONFIG_FILE")
 
 # 驗證單一字體文件
 validate_font() {
     local font="$1"
-    case "$font" in
-        "font-multiplier.png"|"font-number.png"|"font-win-money.png")
+    for supported_font in "${ALL_FONTS[@]}"; do
+        if [ "$font" = "$supported_font" ]; then
             return 0
-            ;;
-        *)
-            return 1
-            ;;
-    esac
+        fi
+    done
+    return 1
 }
 
 # 處理命令行參數
@@ -39,7 +53,7 @@ else
     for font in "${FONT_FILES[@]}"; do
         if ! validate_font "$font"; then
             echo "❌ 錯誤: 不支援的字體文件 '$font'"
-            echo "💡 支援的字體文件: font-multiplier.png, font-number.png, font-win-money.png"
+            echo "💡 支援的字體文件: ${ALL_FONTS[*]}"
             echo "💡 或使用 'all' 處理所有檔案"
             exit 1
         fi
@@ -151,8 +165,8 @@ for i in "${!FONT_FILES[@]}"; do
         echo ""
         if [ "$SUCCESS_FLAG" = true ]; then
             echo "⏸️ 即將處理下一個檔案..."
-            echo "💡 2 秒後自動繼續，或按 Ctrl+C 退出"
-            sleep 2
+            echo "💡 $CONFIG_AUTO_CONTINUE_DELAY 秒後自動繼續，或按 Ctrl+C 退出"
+            sleep "$CONFIG_AUTO_CONTINUE_DELAY"
         else
             echo "⏸️ 處理失敗，即將處理下一個檔案..."
             echo "💡 按 Enter 繼續，或 Ctrl+C 退出"
